@@ -32,11 +32,12 @@
 		The domain to which you want to search the username in.
 	
 	.PARAMETER VerifyDC
-		When searching more than one userid, this switch parameter will ignore any DCs that fail to return a response in the first search. This is to avoid using DCs that are not
-        responding.
+		When searching more than one userid, this switch parameter will ignore any DCs that fail to return a response in the first search. 
+        This is to avoid using DCs that are not responding.
 	
 	.PARAMETER ShowMostRecentOnly
-		This switch parameter will only output the object with the most recent 'LastLogon' value. The function will continue to query all of the DCs in the domain but only the one with the most recent 'LastLogon' value will be displayed.
+		This switch parameter will only output the object with the most recent 'LastLogon' value. The function will continue to query all of the DCs in the domain
+        but only the one with the most recent 'LastLogon' value will be displayed.
 
 	
 	.EXAMPLE
