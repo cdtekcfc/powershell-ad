@@ -141,13 +141,14 @@ function Copy-GroupMembership
 		
 		if ($ModuleCheck -like "*error*") { $ModuleCheck; break }
 		
-		Write-Verbose "Checking if userid entered in ""From"" parameter exists"
+		Write-Verbose "Checking if userid entered in the ""From"" parameter (UserName ""$From"") exists"
 		
 		Try
 		{
 			clv RESULT_getaduser, ERROR_getaduser -ErrorAction SilentlyContinue
 			
 			$RESULT_getaduser = Get-ADUser -Identity $From -ErrorAction Stop -Properties MemberOf
+			#clv RESULT_getaduser - added this to test a null results
 		}
 		
 		Catch
@@ -171,9 +172,8 @@ function Copy-GroupMembership
 			elseif ($RESULT_getaduser -eq $null -and $ERROR_getaduser -eq $null)
 			{
 				Write-Verbose "Displaying error message"
-				Write-Host "ERROR - ""$ERROR_getaduser""" -ForegroundColor Red
-				Write-Verbose "*No Results or Errors were returned when running ""Get-ADUser"" for user ""$From"",
-				script will exit now. *"
+				Write-Host "ERROR - ""No Results were returned when running Get-ADuser, this could mean user ""$From"" has no groups to copy or the command failed to retrieve the group membership. """ -ForegroundColor Red
+				Write-Verbose "*No Results or Errors were returned when running ""Get-ADUser"" for user ""$From"", script will exit now. *"
 				
 			}
 			
@@ -181,16 +181,14 @@ function Copy-GroupMembership
 			{
 				Write-Verbose "Displaying error message"
 				Write-Host "ERROR - ""$ERROR_getaduser""" -ForegroundColor Red
-				Write-Verbose "*Errors were returned when running ""Get-ADUser"" for user ""$From"", script will
-				exit now. *"
+				Write-Verbose "*Errors were returned when running ""Get-ADUser"" for user ""$From"", script will exit now. *"
 			}
 			
 			else
 			{
 				Write-Verbose "Displaying error message"
 				Write-Host "ERROR - ""$ERROR_getaduser""" -ForegroundColor Red
-				Write-Verbose "*No conditions were met when running ""Get-ADUser"" for user ""$From"", script will
-				exit now. *"
+				Write-Verbose "*No conditions were met when running ""Get-ADUser"" for user ""$From"", script will exit now. *"
 			}
 		}
 		
