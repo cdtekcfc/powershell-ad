@@ -195,7 +195,7 @@ function Copy-GroupMembership
 			{
 				Write-Verbose "Displaying error message"
 				Write-Host "ERROR - ""$ERROR_getaduser""" -ForegroundColor Red
-<<<<<<< HEAD
+
 				Write-Verbose "*Errors were returned when running ""Get-ADUser"" for user ""$From"", script will exit now. *"
 				
 				$OBJECT_result_getaduser = [pscustomobject]@{
@@ -204,17 +204,17 @@ function Copy-GroupMembership
 																Status   = "Error - $ERROR_getaduser"
 															}
 				
-=======
+
 				Write-Verbose "*Errors were returned when running ""Get-ADUser"" for user ""$From"", script will
 				exit now. *"
->>>>>>> parent of c7742fb... Corrected variable and reduced Write-Host comments to one line
+
 			}
 			
 			else
 			{
 				Write-Verbose "Displaying error message"
 				Write-Host "ERROR - ""$ERROR_getaduser""" -ForegroundColor Red
-<<<<<<< HEAD
+
 				Write-Verbose "*No conditions were met when running ""Get-ADUser"" for user ""$From"", script will exit now. *"
 				
 				$OBJECT_result_getaduser = [pscustomobject]@{
@@ -223,10 +223,10 @@ function Copy-GroupMembership
 																Status   = "Error - No conditions were met"
 															}
 				
-=======
+
 				Write-Verbose "*No conditions were met when running ""Get-ADUser"" for user ""$From"", script will
 				exit now. *"
->>>>>>> parent of c7742fb... Corrected variable and reduced Write-Host comments to one line
+
 			}
 			
 			
