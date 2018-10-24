@@ -141,14 +141,13 @@ function Copy-GroupMembership
 		
 		if ($ModuleCheck -like "*error*") { $ModuleCheck; break }
 		
-		Write-Verbose "Checking if userid entered in the ""From"" parameter (UserName ""$From"") exists"
+		Write-Verbose "Checking if userid entered in ""From"" parameter exists"
 		
 		Try
 		{
 			clv RESULT_getaduser, ERROR_getaduser -ErrorAction SilentlyContinue
 			
 			$RESULT_getaduser = Get-ADUser -Identity $From -ErrorAction Stop -Properties MemberOf
-			#clv RESULT_getaduser - added this to test a null results
 		}
 		
 		Catch
@@ -162,18 +161,33 @@ function Copy-GroupMembership
 		
 		Finally
 		{
-			if ($RESULT_getaduser -ne $null -and $ERROR_getaduser -eq $null)
+			if     ($RESULT_getaduser -ne $null -and $ERROR_getaduser -eq $null)
 			{
 				
 				Write-Verbose "Results were returned when running ""Get-ADuser"" for user ""$From"""
+				
+				$OBJECT_result_getaduser = 	[pscustomobject]@{
+																UserName = $From
+																Results  = $RESULT_getaduser
+																Status   = 'OK'
+									 						 }
+				
 			
 			}
 			
 			elseif ($RESULT_getaduser -eq $null -and $ERROR_getaduser -eq $null)
 			{
 				Write-Verbose "Displaying error message"
-				Write-Host "ERROR - ""No Results were returned when running Get-ADuser, this could mean user ""$From"" has no groups to copy or the command failed to retrieve the group membership. """ -ForegroundColor Red
-				Write-Verbose "*No Results or Errors were returned when running ""Get-ADUser"" for user ""$From"", script will exit now. *"
+				Write-Host "ERROR - ""$ERROR_getaduser""" -ForegroundColor Red
+				Write-Verbose "*No Results or Errors were returned when running ""Get-ADUser"" for user ""$From"",
+				script will exit now. *"
+				
+				$OBJECT_result_getaduser = [pscustomobject]@{
+																UserName = $From
+																Results  = "Error - No Results"
+																Status   = "Error - No Results"
+															}
+				
 				
 			}
 			
@@ -181,18 +195,44 @@ function Copy-GroupMembership
 			{
 				Write-Verbose "Displaying error message"
 				Write-Host "ERROR - ""$ERROR_getaduser""" -ForegroundColor Red
+<<<<<<< HEAD
 				Write-Verbose "*Errors were returned when running ""Get-ADUser"" for user ""$From"", script will exit now. *"
+				
+				$OBJECT_result_getaduser = [pscustomobject]@{
+																UserName = $From
+																Results  = "Error - $ERROR_getaduser"
+																Status   = "Error - $ERROR_getaduser"
+															}
+				
+=======
+				Write-Verbose "*Errors were returned when running ""Get-ADUser"" for user ""$From"", script will
+				exit now. *"
+>>>>>>> parent of c7742fb... Corrected variable and reduced Write-Host comments to one line
 			}
 			
 			else
 			{
 				Write-Verbose "Displaying error message"
 				Write-Host "ERROR - ""$ERROR_getaduser""" -ForegroundColor Red
+<<<<<<< HEAD
 				Write-Verbose "*No conditions were met when running ""Get-ADUser"" for user ""$From"", script will exit now. *"
+				
+				$OBJECT_result_getaduser = [pscustomobject]@{
+																UserName = $From
+																Results  = "Error - No conditions were met"
+																Status   = "Error - No conditions were met"
+															}
+				
+=======
+				Write-Verbose "*No conditions were met when running ""Get-ADUser"" for user ""$From"", script will
+				exit now. *"
+>>>>>>> parent of c7742fb... Corrected variable and reduced Write-Host comments to one line
 			}
+			
+			
 		}
 		
-		
+		if ($OBJECT_result_getaduser.status -notlike "OK") { $OBJECT_result_getaduser; Break }
 	}
 	
 	
@@ -209,7 +249,7 @@ function Copy-GroupMembership
 	
 	End
 	{
-		
+		Write-Host "I'm still going!!!" -ForegroundColor Green
 		
 	}
 }
